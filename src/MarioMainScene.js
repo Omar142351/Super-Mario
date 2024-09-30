@@ -29,7 +29,6 @@ export default class MarioMainScene extends Phaser.Scene {
 		this.player = this.physics.add.sprite(100, 300, "shortMario").setScale(3, 3)
 		this.physics.add.collider(this.player, this.platform)
 		this.coin = this.physics.add.group()
-		// coin1.anims.play("coin")
 		this.physics.add.collider(this.coin, this.platform)
 		this.cursor = this.input.keyboard.addKeys({ 
 			w: Phaser.Input.Keyboard.KeyCodes.W,
@@ -53,6 +52,18 @@ export default class MarioMainScene extends Phaser.Scene {
 		let coin1 = this.add.sprite(50, 170, "coin").setScale(1.5);
 		coin1.anims.play("loopingCoin")
 		this.coin.add(coin1)
+		let coin2 = this.add.sprite(230, 50, "coin").setScale(1.5);
+		coin2.anims.play("loopingCoin")
+		this.coin.add(coin2)
+		let coin3 = this.add.sprite(370, 50, "coin").setScale(1.5);
+		coin3.anims.play("loopingCoin")
+		this.coin.add(coin3)
+		let coin4 = this.add.sprite(570, 100, "coin").setScale(1.5);
+		coin4.anims.play("loopingCoin")
+		this.coin.add(coin4)
+		let coin5 = this.add.sprite(530, 300, "coin").setScale(1.5);
+		coin5.anims.play("loopingCoin")
+		this.coin.add(coin5)
 	}
 
 	update(){
