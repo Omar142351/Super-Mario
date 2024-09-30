@@ -1,6 +1,7 @@
+//@ts-nocheck
 import Phaser from 'phaser'
 
-export default class MarioMainScene extends Phaser.Scene {
+export default class checkMarioMainScene extends Phaser.Scene {
 	constructor() {
 		super('MarioMainScene')
 	}
@@ -10,6 +11,11 @@ export default class MarioMainScene extends Phaser.Scene {
 		this.player = undefined
 		this.coin = undefined
 		this.cursor = undefined
+		this.score = 0
+		this.scoretext = undefined
+		this.monsters = undefined
+		this.monsterDirection1 = 1
+		this.monsterDirection2 = 1
 	}
 
 	preload() {
@@ -17,6 +23,7 @@ export default class MarioMainScene extends Phaser.Scene {
 		this.load.image("platform", "images/platform.png")
 		this.load.spritesheet("shortMario", "images/short_mario.png", {frameWidth: 18, frameHeight: 16})
 		this.load.spritesheet("coin", "images/coins.png", {frameWidth: 16, frameHeight: 16})
+		this.load.spritesheet("monster", "images/monster.png", {frameWidth: 16, frameHeight: 16})
 	}
 
 	create() {
@@ -30,6 +37,8 @@ export default class MarioMainScene extends Phaser.Scene {
 		this.physics.add.collider(this.player, this.platform)
 		this.coin = this.physics.add.group()
 		this.physics.add.collider(this.coin, this.platform)
+		this.monsters = this.physics.add.group()
+		this.physics.add.collider(this.monsters, this.platform)
 		this.cursor = this.input.keyboard.addKeys({ 
 			w: Phaser.Input.Keyboard.KeyCodes.W,
 			a: Phaser.Input.Keyboard.KeyCodes.A,
@@ -64,6 +73,26 @@ export default class MarioMainScene extends Phaser.Scene {
 		let coin5 = this.add.sprite(530, 300, "coin").setScale(1.5);
 		coin5.anims.play("loopingCoin")
 		this.coin.add(coin5)
+		this.scoretext = this.add.text(20, 20, "Score: 0", {
+			fontSize: "20px",
+			color: "black"
+		})
+		this.physics.add.overlap(this.player, this.coin, this.collectCoin, null, this)
+		let monster1 = this.add.sprite(300, 72, "monster").setScale(1.5)
+		let monster2 = this.add.sprite(400, 322, "monster").setScale(1.5)
+		this.monsters.add(monster1)
+		this.monsters.add(monster2)
+		this.anims.create({
+			key: "monster moving",
+			frames: this.anims.generateFrameNumbers("monster", {start: 0, end: 1}),
+			frameRate: 10,
+			repeat: -1
+		})
+		this.anims.create({
+			key: "monster dying",
+			frames: this.anims.generateFrameNumbers("monster", {start: 1, end: 2}),
+			frameRate: 10,
+		})
 	}
 
 	update(){
@@ -81,6 +110,19 @@ export default class MarioMainScene extends Phaser.Scene {
 			this.player.setVelocity(0)
 			this.player.anims.play("idle")
 		}
+		let monster1 = this.monsters.get(0)
+		// // monster1.x += this.monsterDirection1 * 5
+		// if(monster1.x >= 360){
+		// 	this.monsterDirection1 = -1
+		// }else if(monster1.x <= 240){
+		// 	this.monsterdirection1 = 1
+		// }
+		// console.log(monster1)
+	}
+	collectCoin(player, coin){
+		coin.destroy()
+		this.score+= 5
+		this.scoretext.setText("Score: " + this.score)
 	}
 
 }
