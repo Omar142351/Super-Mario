@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import HelloWorldScene from './MarioMainScene'
+import GameOverScene from './GameOverScene'
+import WinningScene from './WinningScene'
 
 const config = {
 	type: Phaser.AUTO,
@@ -13,7 +15,7 @@ const config = {
 			gravity: { y: 8000 },
 		},
 	},
-	scene: [HelloWorldScene],
+	scene: [HelloWorldScene, GameOverScene, WinningScene],
 	scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
